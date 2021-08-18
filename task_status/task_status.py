@@ -3,14 +3,27 @@ import subprocess
 import json
 from datetime import date
 from dateutil.relativedelta import relativedelta, MO
+import click
+
+__version__ = "0.1.0"
 
 
-def main():
+@click.command()
+@click.version_option(__version__, prog_name="task-status")
+@click.option("--uuid", is_flag=True, help="Display the task UUID")
+def main(uuid):
     today = date.today()
     last_monday = today + relativedelta(weekday=MO(-2))
 
     tasks = subprocess.run(
-        ["task", "+status", f"end.after:{last_monday}", "export"], capture_output=True
+        [
+            "task",
+            f"end.after:{last_monday}",
+            "export",
+            "-home",
+            "status_report:display",
+        ],
+        capture_output=True,
     )
 
     entries = json.loads(tasks.stdout.decode())
@@ -19,7 +32,10 @@ def main():
         if entry["project"] != last_project:
             last_project = entry["project"]
             print(f"* {entry['project']}")
-        print(f"\t* {entry['description']}")
+        if uuid:
+            print(f"\t* {entry['description']} ({entry['uuid']})")
+        else:
+            print(f"\t* {entry['description']}")
 
 
 if __name__ == "__main__":
