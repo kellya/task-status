@@ -11,7 +11,8 @@ __version__ = "0.1.1"
 @click.command()
 @click.version_option(__version__, prog_name="task-status")
 @click.option("--uuid", is_flag=True, help="Display the task UUID")
-def main(uuid):
+@click.option("--header", is_flag=True, help="Display date header")
+def main(uuid, header):
     today = date.today()
     last_monday = today + relativedelta(weekday=MO(-2))
 
@@ -28,6 +29,8 @@ def main(uuid):
 
     entries = json.loads(tasks.stdout.decode())
     last_project = ""
+    if header:
+        print(f"Reporting from: {last_monday}")
     for entry in entries:
         if entry["project"] != last_project:
             last_project = entry["project"]
