@@ -15,6 +15,7 @@ dir:
 
 clean:
 	rm -rf $(BUILDDIR)
+	find . -name __pycache__|xargs rm -rf
 
 poetry-release: build
 	poetry publish
