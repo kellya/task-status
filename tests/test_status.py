@@ -20,3 +20,8 @@ def test_version():
 def test_uuid():
     response = runner.invoke(task_main, ["--uuid"])
     assert response.exit_code == 0
+
+
+def test_help():
+    response = runner.invoke(task_main, ["--help"])
+    assert response.exit_code == 0
