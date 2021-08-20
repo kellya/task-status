@@ -1,5 +1,6 @@
 # Set output dir
 BUILDDIR=dist
+PROJECT_BASE=task_status
 
 #GH/github command used to initiate a release
 GH=/usr/bin/gh
@@ -19,6 +20,12 @@ clean:
 
 poetry-release: build
 	poetry publish
+
+pyflakes:
+	pyflakes .
+
+pylint:
+	pylint ${PROJECT_BASE}
 
 gh-release: build
 	#Figure out what the last/most recent build is
