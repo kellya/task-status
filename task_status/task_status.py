@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+""" Get completed tasks from taskwarrior and output a simple report """
 import subprocess
 import json
 from datetime import date
@@ -13,6 +14,7 @@ __version__ = "0.2.0"
 @click.option("--uuid", is_flag=True, help="Display the task UUID")
 @click.option("--header", is_flag=True, help="Display date header")
 def main(uuid, header):
+    """Main function that does all the work for task_status"""
     today = date.today()
     last_monday = today + relativedelta(weekday=MO(-2))
 
@@ -25,6 +27,7 @@ def main(uuid, header):
             "status_report:display",
         ],
         capture_output=True,
+        check=True,
     )
 
     entries = json.loads(tasks.stdout.decode())
@@ -42,4 +45,4 @@ def main(uuid, header):
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pylint: disable=no-value-for-parameter
