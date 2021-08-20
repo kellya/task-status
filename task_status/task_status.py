@@ -18,14 +18,15 @@ def main(uuid, header):
     today = date.today()
     last_monday = today + relativedelta(weekday=MO(-2))
 
+    task_command = [
+        "task",
+        f"end.after:{last_monday}",
+        "export",
+        "status_report:display",
+        "-home",
+    ]
     tasks = subprocess.run(
-        [
-            "task",
-            f"end.after:{last_monday}",
-            "export",
-            "-home",
-            "status_report:display",
-        ],
+        task_command,
         capture_output=True,
         check=True,
     )
@@ -35,9 +36,12 @@ def main(uuid, header):
     if header:
         print(f"Reporting from: {last_monday}")
     for entry in entries:
-        if entry["project"] != last_project:
-            last_project = entry["project"]
-            print(f"* {entry['project']}")
+        try:
+            if entry["project"] != last_project:
+                last_project = entry["project"]
+        except KeyError:
+            entry["project"] = ""
+        print(f"* {entry['project']}")
         if uuid:
             print(f"\t* {entry['description']} ({entry['uuid']})")
         else:
