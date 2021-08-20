@@ -9,9 +9,6 @@ import click
 __version__ = "0.2.0"
 
 
-def badFunction()
-
-
 @click.command()
 @click.version_option(__version__, prog_name="task-status")
 @click.option("--uuid", is_flag=True, help="Display the task UUID")
