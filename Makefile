@@ -22,7 +22,7 @@ poetry-release: build
 	poetry publish
 
 pyflakes:
-	pyflakes .
+	pyflakes ${PROJECT_BASE}
 
 pylint:
 	pylint ${PROJECT_BASE}
