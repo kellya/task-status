@@ -5,6 +5,8 @@ import json
 from datetime import date
 from dateutil.relativedelta import relativedelta, MO
 import click
+import itertools
+import operator
 
 __version__ = "0.2.0"
 
@@ -32,20 +34,18 @@ def main(uuid, header):
     )
 
     entries = json.loads(tasks.stdout.decode())
-    last_project = ""
+    output_list = []
     if header:
         print(f"Reporting from: {last_monday}")
-    for entry in entries:
-        try:
-            if entry["project"] != last_project:
-                last_project = entry["project"]
-        except KeyError:
-            entry["project"] = ""
-        print(f"* {entry['project']}")
-        if uuid:
-            print(f"\t* {entry['description']} ({entry['uuid']})")
-        else:
-            print(f"\t* {entry['description']}")
+    for i, g in itertools.groupby(entries, key=operator.itemgetter("project")):
+        output_list.append(list(g))
+    for project in output_list:
+        print(f'* {project[0]["project"]}')
+        for entry in project:
+            if uuid:
+                print(f'\t* {entry["description"]} ({entry["uuid"]})')
+            else:
+                print(f'\t* {entry["description"]}')
 
 
 if __name__ == "__main__":
