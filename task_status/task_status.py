@@ -2,11 +2,11 @@
 """ Get completed tasks from taskwarrior and output a simple report """
 import subprocess
 import json
+import itertools
+import operator
 from datetime import date
 from dateutil.relativedelta import relativedelta, MO
 import click
-import itertools
-import operator
 
 __version__ = "0.2.0"
 
@@ -35,16 +35,20 @@ def main(uuid, header):
 
     entries = json.loads(tasks.stdout.decode())
     output_list = []
+    project_list = []
     if header:
         print(f"Reporting from: {last_monday}")
-    for i, g in itertools.groupby(entries, key=operator.itemgetter("project")):
-        output_list.append(list(g))
-    for project in output_list:
-        print(f'* {project[0]["project"]}')
-        for entry in project:
-            if uuid:
+    for status_projects, status_entries in itertools.groupby(
+        entries, key=operator.itemgetter("project")
+    ):
+        project_list.append(status_projects)
+        output_list.append(list(status_entries))
+    for project in project_list:
+        print(f"* {project}")
+        for entry in entries:
+            if entry["project"] == project and uuid:
                 print(f'\t* {entry["description"]} ({entry["uuid"]})')
-            else:
+            if entry["project"] == project:
                 print(f'\t* {entry["description"]}')
 
 
