@@ -15,7 +15,10 @@ __version__ = "0.2.1"
 @click.version_option(__version__, prog_name="task-status")
 @click.option("--uuid", is_flag=True, help="Display the task UUID")
 @click.option("--header", is_flag=True, help="Display date header")
-def main(uuid, header):
+@click.option(
+    "--sort", is_flag=True, default=True, help="Alphabetically sort by project"
+)
+def main(uuid, header, sort):
     """Main function that does all the work for task_status"""
     today = date.today()
     last_monday = today + relativedelta(weekday=MO(-2))
@@ -42,8 +45,12 @@ def main(uuid, header):
     for status_projects, status_entries in itertools.groupby(
         entries, key=operator.itemgetter("project")
     ):
-        project_list.append(status_projects)
+        if status_projects not in project_list:
+            project_list.append(status_projects)
         output_list.append(list(status_entries))
+
+    if sort:
+        project_list.sort()
     for project in project_list:
         print(f"* {project}")
         for entry in entries:
