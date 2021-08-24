@@ -22,6 +22,16 @@ def test_uuid():
     assert response.exit_code == 0
 
 
+def test_sort():
+    response = runner.invoke(task_main, ["--sort"])
+    assert response.exit_code == 0
+
+
+def test_header():
+    response = runner.invoke(task_main, ["--header"])
+    assert response.exit_code == 0
+
+
 def test_help():
     response = runner.invoke(task_main, ["--help"])
     assert response.exit_code == 0
