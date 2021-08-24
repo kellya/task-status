@@ -26,6 +26,7 @@ def main(uuid, header):
         "export",
         "status_report:display",
         "-home",
+        "-deleted",
     ]
     tasks = subprocess.run(
         task_command,
