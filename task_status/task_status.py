@@ -8,7 +8,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta, MO
 import click
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 
 @click.command()
