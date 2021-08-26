@@ -56,7 +56,7 @@ def main(uuid, header, sort):
         for entry in entries:
             if entry["project"] == project and uuid:
                 print(f'\t* {entry["description"]} ({entry["uuid"]})')
-            if entry["project"] == project:
+            elif entry["project"] == project:
                 print(f'\t* {entry["description"]}')
 
 
