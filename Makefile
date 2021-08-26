@@ -8,7 +8,7 @@ GH=/usr/bin/gh
 test:
 	pytest -v
 
-build: dir test
+build: dir
 	poetry build
 
 dir: 
