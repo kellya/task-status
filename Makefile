@@ -21,11 +21,15 @@ clean:
 poetry-release: build
 	poetry publish
 
+coverage:
+	coverage run -m pytest
+	coverage report -m
+
 pyflakes:
 	pyflakes ${PROJECT_BASE}
 
 pylint:
-	pylint ${PROJECT_BASE}
+	pylint --load-plugins=pylint_django --django-settings-module=fam_mac.settings ${PROJECT_BASE}
 
 gh-release: build
 	#Figure out what the last/most recent build is
@@ -36,4 +40,4 @@ gh-release: build
 
 release: poetry-release gh-release
 
-.PHONY: dir clean release gh-release poetry-release
+.PHONY: dir clean release gh-release poetry-release coverage
