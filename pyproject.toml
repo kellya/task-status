@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "task-status"
-version = "0.2.2"
+version = "0.2.3"
 description = "Utility to get status data built from taskwarrior"
 authors = ["Alex Kelly <alex.kelly@franklin.edu>"]
 
