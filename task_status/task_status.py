@@ -26,10 +26,10 @@ def main(uuid, header, sort):
     task_command = [
         "task",
         f"end.after:{last_monday}",
-        "export",
         "status_report:display",
         "-home",
         "-deleted",
+        "export",
     ]
     tasks = subprocess.run(
         task_command,
