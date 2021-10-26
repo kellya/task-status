@@ -15,10 +15,11 @@ __version__ = "0.2.4"
 @click.version_option(__version__, prog_name="task-status")
 @click.option("--uuid", is_flag=True, help="Display the task UUID")
 @click.option("--header", is_flag=True, help="Display date header")
+@click.option("--bullet", default="*", help="Character to use for bullets in list")
 @click.option(
     "--sort", is_flag=True, default=True, help="Alphabetically sort by project"
 )
-def main(uuid, header, sort):
+def main(uuid, header, bullet, sort):
     """Main function that does all the work for task_status"""
     today = date.today()
     last_monday = today + relativedelta(weekday=MO(-2))
@@ -52,12 +53,12 @@ def main(uuid, header, sort):
     if sort:
         project_list.sort()
     for project in project_list:
-        print(f"* {project}")
+        print(f"{bullet} {project}")
         for entry in entries:
             if entry["project"] == project and uuid:
-                print(f'\t* {entry["description"]} ({entry["uuid"]})')
+                print(f'\t{bullet} {entry["description"]} ({entry["uuid"]})')
             elif entry["project"] == project:
-                print(f'\t* {entry["description"]}')
+                print(f'\t{bullet} {entry["description"]}')
 
 
 if __name__ == "__main__":
